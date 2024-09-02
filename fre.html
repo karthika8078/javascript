@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Most Frequent Item</title>
+</head>
+<body>
+
+    
+    <h1>Find the Most Frequent Item in an Array</h1>
+    <form id="arrayForm">
+        <label for="arrayInput">Enter array elements (comma-separated):</label><br>
+        <input type="text" id="arrayInput" required><br><br>
+        <input type="submit" value="Find Most Frequent Item">
+    </form>
+    <p id="result"></p>
+
+    <script>
+        function mostFrequentItem(array) {
+            const frequencyMap = {};
+            
+            array.forEach(item => {
+                const key = typeof item === 'number' ? item : item.toString();
+                frequencyMap[key] = (frequencyMap[key] || 0) + 1;
+            });
+
+            let mostFrequent = null;
+            let maxCount = 0;
+
+            for (const [item, count] of Object.entries(frequencyMap)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    mostFrequent = item;
+                }
+            }
+
+            return typeof mostFrequent === 'number' ? +mostFrequent : mostFrequent;
+        }
+
+        document.getElementById('arrayForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const input = document.getElementById('arrayInput').value;
+            const array = input.split(',').map(item => {
+                item = item.trim();
+                return isNaN(item) ? item : Number(item);
+            });
+
+            if (array.length === 0) {
+                document.getElementById('result').textContent = 'Array is empty.';
+                return;
+            }
+
+            const mostFrequent = mostFrequentItem(array);
+            document.getElementById('result').textContent = `Most frequent item is: ${mostFrequent}`;
+        });
+    </script>
+</body>
+</html>
